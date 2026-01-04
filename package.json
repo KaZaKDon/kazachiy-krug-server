@@ -21,7 +21,8 @@
     "homepage": "https://github.com/KaZaKDon/kazachiy-krug-server#readme",
     "dependencies": {
         "cors": "^2.8.5",
-        "express": "^5.2.1"
+        "express": "^5.2.1",
+        "socket.io": "^4.8.3"
     },
     "devDependencies": {
         "nodemon": "^3.1.11"
