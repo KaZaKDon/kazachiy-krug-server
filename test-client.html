@@ -28,6 +28,14 @@
         socket.on('chat:joined', (data) => {
             console.log('Joined chat:', data.chatId);
         });
+        socket.emit('message:send', {
+            chatId: 'room-1',
+            text: 'Всем привет',
+        });
+
+        socket.on('message:new', (msg) => {
+            console.log('New message:', msg);
+        });
 
         document.getElementById('pingBtn').addEventListener('click', () => {
             socket.emit('ping', {

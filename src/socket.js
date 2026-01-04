@@ -19,6 +19,33 @@ export default function initSocket(io) {
             socket.emit('chat:joined', { chatId });
         });
 
+        socket.on('message:send', ({ chatId, text }) => {
+            console.log(`Message to ${chatId} from ${socket.id}:`, text);
+
+            const message = {
+                chatId,
+                text,
+                senderId: socket.id,
+                createdAt: Date.now(),
+            };
+
+            io.to(chatId).emit('message:new', message);
+        });
+
+        socket.on('typing:start', ({ chatId }) => {
+            socket.to(chatId).emit('typing:start', {
+                chatId,
+                userId: socket.id,
+            });
+        });
+
+        socket.on('typing:stop', ({ chatId }) => {
+            socket.to(chatId).emit('typing:stop', {
+                chatId,
+                userId: socket.id,
+            });
+        });
+
         socket.on('disconnect', () => {
             console.log('Client disconnected:', socket.id);
         });
