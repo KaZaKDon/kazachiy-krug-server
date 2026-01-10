@@ -19,17 +19,19 @@ export default function initSocket(io) {
             socket.emit('chat:joined', { chatId });
         });
 
-        socket.on('message:send', ({ chatId, text }) => {
+        socket.on('message:send', ({ id, chatId, text, sender }) => {
             console.log(`Message to ${chatId} from ${socket.id}:`, text);
 
             const message = {
+                id,                 // ← ВАЖНО: сохраняем client id
                 chatId,
                 text,
-                senderId: socket.id,
+                sender,             // { id, name }
                 createdAt: Date.now(),
             };
 
-            io.to(chatId).emit('message:new', message);
+            // ❗ отправляем всем, КРОМЕ отправителя
+            socket.to(chatId).emit('message:new', message);
         });
 
         socket.on('typing:start', ({ chatId }) => {

@@ -33,8 +33,13 @@
             text: 'Всем привет',
         });
 
-        socket.on('message:new', (msg) => {
-            console.log('New message:', msg);
+        socket.on("message:send", ({ chatId, text, sender }) => {
+            io.to(chatId).emit("message:new", {
+                chatId,
+                text,
+                sender
+            });
+            console.log('New message:', text);
         });
 
         document.getElementById('pingBtn').addEventListener('click', () => {
